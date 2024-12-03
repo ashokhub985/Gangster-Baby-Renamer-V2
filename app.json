@@ -1,125 +1,72 @@
 
 {
-
     "name": "Gangster Baby Renamer Bot",
-
-    "description": "Telegram File Renamer Bot 4GB ",
-
+    "description": "Advanced Telegram File Renamer Bot for 4GB Files with Enhanced Security and Monitoring",
     "keywords": [
-
-        "Gangster Baby Renamer Bot ",
-
+        "Gangster Baby Renamer Bot",
         "4GB File",
-
-        "telegram",
-        
-        "LazyDeveloperr"
-
+        "Telegram",
+        "LazyDeveloperr",
+        "Advanced Bot"
     ],
-
     "repository": "https://github.com/LazyDeveloperr/Gangster-Baby-V2",
-
     "success_url": "https://telegram.dog/LazyDeveloperr",
-
     "env": {
-
         "CHANNEL": {
-
-            "description": "Channel or Group user Name With @",
-
-            "required":true
-
-            
-
-         },
-
+            "description": "Channel or Group user Name With @ (e.g., @my_channel)",
+            "required": true
+        },
         "STRING": {
-
-            "description": "Pyrogram String Session Use  @genStr_Bot",
-
+            "description": "Pyrogram String Session. Generate using @genStr_Bot",
             "required": true
-
         },
-
         "API_ID": {
-
-            "description": "Your APP ID From my.telegram.org ",
-
+            "description": "Your APP ID from my.telegram.org",
             "required": true
-
         },
-
         "API_HASH": {
-
-            "description": "Your API Hash From my.telegram.org ",
-
+            "description": "Your API Hash from my.telegram.org",
             "required": true
-
         },
-
         "TOKEN": {
-
-            "description": "Your Bot Token From @BotFather",
-
+            "description": "Your Bot Token from @BotFather",
             "required": true
-
         },
-
         "ADMIN": {
-
-            "description":"Add Your User ID",
-
+            "description": "Add Your User ID for administrative access",
             "required": true
-
         },
-
-        "DB_URL":{
-
-             "description":"Database Url Get It From Mongo DB"
-
-        },
-
-        "DB_NAME":{
-
-               "description":"Database Name ",
-
-               "required":true
-
-        },
-
-        "LOG_CHANNEL":{
-
-             "description":"Channel Id Nedd Store Files Get Your channel id from Rose @MissRose_bot",
-
-             "required": true
-
-        },
-        "LAZY_PIC":{
-
-            "description":"Start up pic of your bot. Get from telegraph_Bot",
-
+        "DB_URL": {
+            "description": "Database URL. Get it from MongoDB",
             "required": true
-
-       }
-
-        
-
+        },
+        "DB_NAME": {
+            "description": "Name of the database to be used",
+            "required": true
+        },
+        "LOG_CHANNEL": {
+            "description": "Channel ID for storing logs and file operations. Get your channel ID from Rose @MissRose_bot",
+            "required": true
+        },
+        "LAZY_PIC": {
+            "description": "Start-up picture of your bot. Get it from telegraph_Bot",
+            "required": true
+        },
+        "ENABLE_MONITORING": {
+            "description": "Enable real-time monitoring with services like New Relic or Datadog",
+            "required": false
+        },
+        "SECURITY_KEY": {
+            "description": "Security key for encrypting environment variables",
+            "required": true
+        }
     },
-
     "buildpacks": [
-
-      {
-
-        "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
-
-      },
-
-      {
-
-        "url": "heroku/python"
-
-      }
-
+        {
+            "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+        },
+        {
+            "url": "heroku/python"
+        }
     ]
-
 }
