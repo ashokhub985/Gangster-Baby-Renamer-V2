@@ -1,48 +1,72 @@
 import time
 from pyrogram import Client, filters
 from pyrogram.types import (
-    InlineKeyboardButton, InlineKeyboardMarkup, ForceReply)
-from helper.database import find_one, used_limit
-from helper.database import daily as daily_
-import datetime
-from datetime import timedelta, date, datetime
-from datetime import date as date_
-from helper.progress import humanbytes
-from helper.database import daily as daily_
+    InlineKeyboardButton, InlineKeyboardMarkup
+)
+from helper.database import (
+    find_one, used_limit, daily as daily_,
+    uploadlimit, usertype
+)
 from helper.date import check_expi
-from helper.database import uploadlimit, usertype
+from helper.progress import humanbytes
+from datetime import datetime, timedelta, date
 
 
 @Client.on_message(filters.private & filters.command(["myplan"]))
-async def start(client, message):
-    used_ = find_one(message.from_user.id)
-    daily = used_["daily"]
-    expi = daily - \
-        int(time.mktime(time.strptime(str(date_.today()), '%Y-%m-%d')))
-    if expi != 0:
-        today = date_.today()
-        pattern = '%Y-%m-%d'
-        epcho = int(time.mktime(time.strptime(str(today), pattern)))
-        daily_(message.from_user.id, epcho)
-        used_limit(message.from_user.id, 0)
-    _newus = find_one(message.from_user.id)
-    used = _newus["used_limit"]
-    limit = _newus["uploadlimit"]
-    remain = int(limit) - int(used)
-    user = _newus["usertype"]
-    ends = _newus["prexdate"]
-    if ends:
-        pre_check = check_expi(ends)
-        if pre_check == False:
-            uploadlimit(message.from_user.id, 1288490188)
-            usertype(message.from_user.id, "Free")
-    if ends == None:
-        text = f"User ID:- ```{message.from_user.id}```\nPlan :- {user}\nDaly Upload Limit :- {humanbytes(limit)}\nToday Used :- {humanbytes(used)}\nRemain:- {humanbytes(remain)}"
-    else:
-        normal_date = datetime.fromtimestamp(ends).strftime('%Y-%m-%d')
-        text = f"User ID:- ```{message.from_user.id}```\nPlan :- {user}\nDaly Upload Limit :- {humanbytes(limit)}\nToday Used :- {humanbytes(used)}\nRemain:- {humanbytes(remain)}\n\nYour Plan Ends On :- {normal_date}"
+async def show_plan(client, message):
+    user_id = message.from_user.id
+    user_data = find_one(user_id)
+    
+    # Check for daily reset and update limits if needed
+    daily = user_data["daily"]
+    current_date_epoch = int(time.mktime(time.strptime(str(date.today()), '%Y-%m-%d')))
+    if daily != current_date_epoch:
+        daily_(user_id, current_date_epoch)
+        used_limit(user_id, 0)
+    
+    # Fetch updated user data
+    user_data = find_one(user_id)
+    used = user_data["used_limit"]
+    limit = user_data["uploadlimit"]
+    remaining = limit - used
+    user_type = user_data["usertype"]
+    expiration_date = user_data["prexdate"]
 
-    if user == "Free":
-        await message.reply(text, quote=True, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Upgrade 💰💳", callback_data="upgrade"), InlineKeyboardButton("Cancel ✖️ ", callback_data="cancel")]]))
+    # Check for plan expiration
+    if expiration_date:
+        if not check_expi(expiration_date):
+            uploadlimit(user_id, 1288490188)  # Unlimited or reset
+            usertype(user_id, "Free")
+    
+    # Build the response message
+    if expiration_date is None:
+        message_text = (
+            f"User ID: ```{user_id}```\n"
+            f"Plan: {user_type}\n"
+            f"Daily Upload Limit: {humanbytes(limit)}\n"
+            f"Today Used: {humanbytes(used)}\n"
+            f"Remaining: {humanbytes(remaining)}"
+        )
     else:
-        await message.reply(text, quote=True)
+        expiration_date_formatted = datetime.fromtimestamp(expiration_date).strftime('%Y-%m-%d')
+        message_text = (
+            f"User ID: ```{user_id}```\n"
+            f"Plan: {user_type}\n"
+            f"Daily Upload Limit: {humanbytes(limit)}\n"
+            f"Today Used: {humanbytes(used)}\n"
+            f"Remaining: {humanbytes(remaining)}\n\n"
+            f"Your Plan Ends On: {expiration_date_formatted}"
+        )
+
+    # Respond with a keyboard for Free users
+    if user_type == "Free":
+        await message.reply(
+            message_text,
+            quote=True,
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("Upgrade 💰💳", callback_data="upgrade"),
+                 InlineKeyboardButton("Cancel ✖️", callback_data="cancel")]
+            ])
+        )
+    else:
+        await message.reply(message_text, quote=True)
