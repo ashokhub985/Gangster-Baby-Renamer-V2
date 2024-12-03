@@ -1,21 +1,32 @@
-from datetime import timedelta, date ,datetime
+from datetime import timedelta, date, datetime
 import time
 
-def add_date():
-	today = date.today()
-	ex_date = today + timedelta(days=30)
-	pattern = '%Y-%m-%d'
-	epcho = int(time.mktime(time.strptime(str(ex_date), pattern)))
-	normal_date = datetime.fromtimestamp(epcho).strftime('%Y-%m-%d')
-	return epcho , normal_date
+def add_date(days=30):
+    """
+    Calculate the expiration date and return it in both epoch and formatted date formats.
+    
+    Args:
+        days (int): Number of days to add to the current date. Default is 30 days.
+    
+    Returns:
+        tuple: (expiration_date_in_epoch, expiration_date_in_YYYY_MM_DD_format)
+    """
+    today = date.today()
+    expiration_date = today + timedelta(days=days)
+    expiration_epoch = int(expiration_date.strftime('%s'))  # More modern approach for epoch
+    formatted_date = expiration_date.strftime('%Y-%m-%d')
+    return expiration_epoch, formatted_date
 
-def check_expi(saved_date):
-	today = date.today()
-	pattern = '%Y-%m-%d'
-	epcho = int(time.mktime(time.strptime(str(today), pattern)))
-	then = saved_date - epcho
-	print(then)
-	if then > 0:
-		return True
-	else:
-		return False
+def check_expi(saved_epoch_date):
+    """
+    Check if a saved epoch date has expired compared to the current date.
+    
+    Args:
+        saved_epoch_date (int): Epoch date to check.
+    
+    Returns:
+        bool: True if the date is still valid (not expired), False otherwise.
+    """
+    current_epoch = int(time.time())
+    remaining_time = saved_epoch_date - current_epoch
+    return remaining_time > 0
