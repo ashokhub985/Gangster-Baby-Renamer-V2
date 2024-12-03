@@ -30,3 +30,12 @@ def check_expi(saved_epoch_date):
     current_epoch = int(time.time())
     remaining_time = saved_epoch_date - current_epoch
     return remaining_time > 0
+
+# Add 30 days to today's date
+epoch, formatted_date = add_date()
+print(f"Expiration Date (Epoch): {epoch}")
+print(f"Expiration Date (Formatted): {formatted_date}")
+
+# Check if a saved date is still valid
+is_valid = check_expi(epoch)
+print(f"Is the expiration date valid? {'Yes' if is_valid else 'No'}")
