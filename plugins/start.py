@@ -1,139 +1,186 @@
 from datetime import date as date_
 import datetime
 import os
-from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 import time
-from pyrogram import Client, filters
-from pyrogram.types import (
-    InlineKeyboardButton, InlineKeyboardMarkup)
 import humanize
+from pyrogram import Client, filters
+from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from helper.progress import humanbytes
-
-from helper.database import insert, find_one, used_limit, usertype, uploadlimit, addpredata, total_rename, total_size
+from helper.database import (
+    insert, find_one, used_limit, usertype, uploadlimit, addpredata, 
+    total_rename, total_size, daily as daily_
+)
 from pyrogram.file_id import FileId
-from helper.database import daily as daily_
 from helper.date import check_expi
-import os
+import logging
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+
+# Environment Variables
 CHANNEL = os.environ.get('CHANNEL', "")
 STRING = os.environ.get("STRING", "")
 ADMIN = int(os.environ.get("ADMIN", 1484670284))
-bot_username = os.environ.get("BOT_USERNAME","GangsterBaby_renamer_BOT")
-log_channel = int(os.environ.get("LOG_CHANNEL", ""))
-token = os.environ.get('TOKEN', '')
-botid = token.split(':')[0]
+BOT_USERNAME = os.environ.get("BOT_USERNAME", "GangsterBaby_renamer_BOT")
+LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
+TOKEN = os.environ.get('TOKEN', '')
+BOTID = TOKEN.split(':')[0]
 FLOOD = 500
 LAZY_PIC = os.environ.get("LAZY_PIC", "")
 
-
-# Part of Day --------------------
-currentTime = datetime.datetime.now()
-
-if currentTime.hour < 12:
-    wish = "❤️ Good morning sweetheart ❤️"
-elif 12 <= currentTime.hour < 12:
-    wish = '🤍 Good afternoon my Love 🤍'
+# Current Time and Greeting Logic
+current_time = datetime.datetime.now()
+if current_time.hour < 12:
+    WISH = "❤️ Good morning sweetheart ❤️"
+elif 12 <= current_time.hour < 17:
+    WISH = '🤍 Good afternoon my Love 🤍'
 else:
-    wish = '🦋 Good evening baby 🦋'
+    WISH = '🦋 Good evening baby 🦋'
 
-# -------------------------------
-
-
+# Command to start the bot
 @Client.on_message(filters.private & filters.command(["start"]))
 async def start(client, message):
     old = insert(int(message.chat.id))
     try:
-        id = message.text.split(' ')[1]
-    except:
-        txt=f"""Hello {wish} {message.from_user.first_name } \n\n
-	I am file renamer bot, Please sent any telegram**Document Or Video** and enter new filename to rename it"""
-        await message.reply_photo(photo=LAZY_PIC,
-                                caption=txt,
-                                reply_markup=InlineKeyboardMarkup(
-                                      [[InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
-                                      [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                                      [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
-                                      InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
-                                      [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
-                                      ]))
+        user_id = int(message.text.split(' ')[1])
+    except (IndexError, ValueError):
+        txt = f"""Hello {WISH} {message.from_user.first_name} \n\n
+        I am a file renamer bot. Please send any Telegram **Document or Video** and enter a new filename to rename it."""
+        await message.reply_photo(
+            photo=LAZY_PIC,
+            caption=txt,
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
+                [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
+                [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
+                 InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
+                [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
+            ])
+        )
         return
-    if id:
-        if old == True:
-            try:
-                await client.send_message(id, "Your Friend is Already Using Our Bot")
-                await message.reply_photo(photo=LAZY_PIC,
-                                         caption=txt,
-                                         reply_markup=InlineKeyboardMarkup(
-                                             [[InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
-                                              [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                                              [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
-                                             InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
-                                             [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
-                                          ]))
-            except:
-                return
-        else:
-            await client.send_message(id, "Congrats! You Won 100MB Upload limit")
-            _user_ = find_one(int(id))
-            limit = _user_["uploadlimit"]
-            new_limit = limit + 104857600
-            uploadlimit(int(id), new_limit)
-            await message.reply_text(text=f"""
-	Hello {wish} {message.from_user.first_name }\n\n
-	__I am file renamer bot, Please send any telegram 
-	**Document Or Video** and enter new filename to rename it__
-	""", reply_to_message_id=message.id,
-                                     reply_markup=InlineKeyboardMarkup(
-                                         [[InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
-                                          [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                                          [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
-                                          InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
-                                          [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
-                                          ]))
-    
 
+    # Check if the user has already used the bot
+    if old:
+        try:
+            await client.send_message(user_id, "Your friend is already using our bot.")
+            await message.reply_photo(
+                photo=LAZY_PIC,
+                caption=txt,
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
+                    [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
+                    [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
+                     InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
+                    [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
+                ])
+            )
+        except Exception as e:
+            logging.error(f"Failed to send message to user {user_id}: {e}")
+        return
+    else:
+        await client.send_message(user_id, "Congrats! You won 100MB upload limit.")
+        _user_ = find_one(user_id)
+        new_limit = _user_["uploadlimit"] + 104857600  # 100MB
+        uploadlimit(user_id, new_limit)
+        await message.reply_text(
+            text=f"""
+            Hello {WISH} {message.from_user.first_name} \n\n
+            __I am a file renamer bot. Please send any Telegram **Document or Video** and enter a new filename to rename it.__
+            """,
+            reply_to_message_id=message.id,
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
+                [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
+                [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
+                 InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
+                [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
+            ])
+        )
 
+# Function to handle file messages
 @Client.on_message((filters.private & (filters.document | filters.audio | filters.video)) | filters.channel & (filters.document | filters.audio | filters.video))
 async def send_doc(client, message):
     update_channel = CHANNEL
     user_id = message.from_user.id
+
+    # Check if the user is subscribed to the update channel
     if update_channel:
         try:
             await client.get_chat_member(update_channel, user_id)
         except UserNotParticipant:
-            _newus = find_one(message.from_user.id)
-            user = _newus["usertype"]
-            await message.reply_text("**__You are not subscribed my channel__** ",
-                                     reply_to_message_id=message.id,
-                                     reply_markup=InlineKeyboardMarkup(
-                                         [[InlineKeyboardButton("🔺 Update Channel 🔺", url=f"https://t.me/{update_channel}")]]))
-            await client.send_message(log_channel,f"🦋 #GangsterBaby_LOGS 🦋,\n\n**ID** : `{user_id}`\n**Name**: {message.from_user.first_name} {message.from_user.last_name}\n**User-Plan** : {user}\n\n ",
-                                                                                                       reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔺 Restrict User ( **pm** ) 🔺", callback_data="ceasepower")]]))
+            _newus = find_one(user_id)
+            user_plan = _newus["usertype"]
+            await message.reply_text(
+                "**__You are not subscribed to my channel__**",
+                reply_to_message_id=message.id,
+                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔺 Update Channel 🔺", url=f"https://t.me/{update_channel}")]])
+            )
+            await client.send_message(LOG_CHANNEL, f"🦋 #GangsterBaby_LOGS 🦋,\n\n**ID**: `{user_id}`\n**Name**: {message.from_user.first_name} {message.from_user.last_name}\n**User Plan**: {user_plan}")
             return
 
     try:
-        bot_data = find_one(int(botid))
+        bot_data = find_one(int(BOTID))
         prrename = bot_data['total_rename']
         prsize = bot_data['total_size']
-        user_deta = find_one(user_id)
-    except:
-        await message.reply_text("Use About cmd first /about")
+        user_data = find_one(user_id)
+    except Exception as e:
+        logging.error(f"Error fetching data for user {user_id}: {e}")
+        await message.reply_text("Use the About command first (/about).")
+        return
+
+    # Check for user data and handle expired plans
     try:
-        used_date = user_deta["date"]
-        buy_date = user_deta["prexdate"]
-        daily = user_deta["daily"]
-        user_type = user_deta["usertype"]
-    except:
-        await message.reply_text(text=f"Hello dear {message.from_user.first_name}  **we are currently working on this issue**\n\nPlease try to rename files from your another account.\nBecause this BOT can't rename file sent by some ids.\n\nIf you are an **ADMIN** Don't worry ! here we have a solution for you dear {message.from_user.first_name }.\n\nPlease use \n👉 `/addpremium your_other_userid` 👈 to use premium feautres\n\n",
-                                  reply_markup=InlineKeyboardMarkup([
-                                                                     [InlineKeyboardButton("🦋 Contact LazyDeveloper 🦋", url='https://telegram.me/LazyDeveloper')],
-                                                                     [InlineKeyboardButton("🔺 Watch Tutorial 🔺", url='https://youtube.com/@LazyDeveloperr')],
-                                                                     [InlineKeyboardButton("🦋 Visit Channel  ", url='https://t.me/LazyDeveloper'),
-                                                                     InlineKeyboardButton("  Support Group 🦋", url='https://t.me/LazyPrincessSupport')],
-                                                                     [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
-                                                                    ]))
-        await message.reply_text(text=f"🦋")
-        return 
+        used_date = user_data["date"]
+        buy_date = user_data["prexdate"]
+        daily = user_data["daily"]
+        user_type = user_data["usertype"]
+    except KeyError:
+        await message.reply_text(
+            text=f"Hello {message.from_user.first_name}, we are currently working on this issue. Please try renaming files from another account.",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🦋 Contact LazyDeveloper 🦋", url='https://telegram.me/LazyDeveloper')],
+                [InlineKeyboardButton("🔺 Watch Tutorial 🔺", url='https://youtube.com/@LazyDeveloperr')],
+                [InlineKeyboardButton("🦋 Visit Channel", url='https://t.me/LazyDeveloper'),
+                 InlineKeyboardButton("Support Group 🦋", url='https://t.me/LazyPrincessSupport')],
+                [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
+            ])
+        )
+        return
+
+    # Time and Limit Calculation
+    current_time = time.time()
+    if user_type == "Free":
+        LIMIT = 600
+    else:
+        LIMIT = 50
+    expiry_time = used_date + LIMIT
+    time_left = round(expiry_time - current_time)
+    conversion = datetime.timedelta(seconds=time_left)
+    left_time_str = str(conversion)
+
+    if time_left > 0:
+        await message.reply_text(
+            f"```Sorry, flood control is active. Please wait for {left_time_str}```",
+            reply_to_message_id=message.id
+        )
+    else:
+        # Process the file
+        media = await client.get_messages(message.chat.id, message.id)
+        file = media.document or media.video or media.audio
+        dc_id = FileId.decode(file.file_id).dc_id
+        filename = file.file_name
+        user_data = find_one(user_id)
+        user_size = user_data["uploadlimit"]
+
+        # Perform file size and limit checks
+        if file.file_size > user_size:
+            await message.reply_text(
+                f"**Sorry, your upload limit of {humanbytes(user_size)} has been reached. Upgrade for more!**",
+                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("☕ Upgrade Plan ☕", url='https://t.me/LazyDeveloper')]])
+            )
+            return
+        # Proceed with renaming and updating user data here as needed
 
     c_time = time.time()
 
