@@ -8,8 +8,8 @@ from hachoir.parser import createParser
 import ffmpeg
 
 # Replace with your own details
-API_ID = os.environ.get("API_ID", "22687964")
-API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
+API_ID = os.environ.get("API_ID", "")
+API_HASH = os.environ.get("API_HASH", "")
 STRING = os.environ.get("STRING", "")
 CHANNEL_ID = os.environ.get("CHANNEL_ID", "-1002474537025")  # The channel to process
 
@@ -96,10 +96,10 @@ from helper.set import escape_invalid_curly_brackets
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-API_ID = int(os.environ.get("API_ID", "22687964"))
-API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
+API_ID = int(os.environ.get("API_ID", ""))
+API_HASH = os.environ.get("API_HASH", "")
 STRING = os.environ.get("STRING", "")
-ADMIN = int(os.environ.get("ADMIN", "862729509"))
+ADMIN = int(os.environ.get("ADMIN", ""))
 LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002247619392"))
 DOWNLOAD_DIR = "downloads"
 
