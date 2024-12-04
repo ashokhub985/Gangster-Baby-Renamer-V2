@@ -11,6 +11,7 @@ from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.http import MediaFileUpload
+from werkzeug.utils import quote as url_quote
 
 # Database setup
 conn = sqlite3.connect('user_profiles.db')
