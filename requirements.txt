@@ -12,3 +12,4 @@ aiohttp==3.8.1
 python-telegram-bot==20.0   # or the latest version
 google-api-python-client==2.31.0  # or the latest version
 google-auth-oauthlib==0.4.6  # or the latest version
+python-telegram-bot==20.0  # Ya latest version
