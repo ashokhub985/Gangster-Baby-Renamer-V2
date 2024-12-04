@@ -1,5 +1,15 @@
 from flask import Flask, jsonify, request
 import logging
+from flask import Flask, jsonify, request
+from werkzeug.urls import url_quote  # Yeh line hata dijiye
+
+app = Flask(__name__)
+
+@app.route('/example')
+def example():
+    # Yahan aap url_quote ka istemal kar rahe honge
+    quoted_url = url_quote('https://example.com')
+    return jsonify({"quoted_url": quoted_url})
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -24,3 +34,6 @@ def hello_world():
 if __name__ == "__main__":
     # Run the app with enhanced configurations
     app.run(debug=True, host='0.0.0.0', port=8080)
+
+if __name__ == '__main__':
+    app.run()
