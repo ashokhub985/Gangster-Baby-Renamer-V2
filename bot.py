@@ -9,9 +9,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 # Environment variables
-TOKEN = os.environ.get("TOKEN", "")
-API_ID = int(os.environ.get("API_ID", ""))
-API_HASH = os.environ.get("API_HASH", "")
+TOKEN = os.environ.get("TOKEN", "7779296728:AAFFJu5Om-Nv7PGmwniWUTG14P4BSQS8K04")
+API_ID = int(os.environ.get("API_ID", "862729509"))
+API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
 STRING = os.environ.get("STRING", "")
 
 # Validate required environment variables
