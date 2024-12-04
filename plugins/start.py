@@ -51,10 +51,10 @@ async def start(client, message):
             photo=LAZY_PIC,
             caption=txt,
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
+                [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/updateeeeeeee")],
                 [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
-                 InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
+                [InlineKeyboardButton("Support Group", url='https://t.me/AgentCommunity999'),
+                 InlineKeyboardButton("Movie Channel", url='https://t.me/movieeeeeeeeeeeeew')],
                 [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
             ])
         )
@@ -68,10 +68,10 @@ async def start(client, message):
                 photo=LAZY_PIC,
                 caption=txt,
                 reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
+                    [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/updateeeeeeee")],
                     [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                    [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
-                     InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
+                    [InlineKeyboardButton("Support Group", url='https://t.me/AgentCommunity999'),
+                     InlineKeyboardButton("Movie Channel", url='https://t.me/movieeeeeeeeeeeeew')],
                     [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
                 ])
             )
@@ -90,10 +90,10 @@ async def start(client, message):
             """,
             reply_to_message_id=message.id,
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/LazyDeveloper")],
+                [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/updateeeeeeee")],
                 [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                [InlineKeyboardButton("Support Group", url='https://t.me/LazyPrincessSupport'),
-                 InlineKeyboardButton("Movie Channel", url='https://t.me/real_MoviesAdda2')],
+                [InlineKeyboardButton("Support Group", url='https://t.me/AgentCommunity999'),
+                 InlineKeyboardButton("Movie Channel", url='https://t.me/movieeeeeeeeeeeeew')],
                 [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
             ])
         )
@@ -139,10 +139,10 @@ async def send_doc(client, message):
         await message.reply_text(
             text=f"Hello {message.from_user.first_name}, we are currently working on this issue. Please try renaming files from another account.",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🦋 Contact LazyDeveloper 🦋", url='https://telegram.me/LazyDeveloper')],
+                [InlineKeyboardButton("🦋 Contact LazyDeveloper 🦋", url='https://t.me/updateeeeeeee')],
                 [InlineKeyboardButton("🔺 Watch Tutorial 🔺", url='https://youtube.com/@LazyDeveloperr')],
-                [InlineKeyboardButton("🦋 Visit Channel", url='https://t.me/LazyDeveloper'),
-                 InlineKeyboardButton("Support Group 🦋", url='https://t.me/LazyPrincessSupport')],
+                [InlineKeyboardButton("🦋 Visit Channel", url='https://t.me/AgentCommunity999'),
+                 InlineKeyboardButton("Support Group 🦋", url='https://t.me/movieeeeeeeeeeeeew')],
                 [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
             ])
         )
@@ -177,7 +177,7 @@ async def send_doc(client, message):
         if file.file_size > user_size:
             await message.reply_text(
                 f"**Sorry, your upload limit of {humanbytes(user_size)} has been reached. Upgrade for more!**",
-                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("☕ Upgrade Plan ☕", url='https://t.me/LazyDeveloper')]])
+                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("☕ Upgrade Plan ☕", url='https://t.me/updateeeeeeee')]])
             )
             return
         # Proceed with renaming and updating user data here as needed
