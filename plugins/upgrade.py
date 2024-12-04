@@ -26,7 +26,7 @@ def get_upgrade_text_and_keyboard():
     After Payment, send screenshots of the payment to Admin @mRiderDM"""
 
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("ADMIN 🛂", url="https://t.me/mRiderDM")],
+        [InlineKeyboardButton("ADMIN 🛂", url="https://t.me/Agent_ghost999")],
         [InlineKeyboardButton("Paytm", url="https://p.paytm.me/xCTH/vo37hii9")],
         [InlineKeyboardButton("Cancel", callback_data="cancel")]
     ])
