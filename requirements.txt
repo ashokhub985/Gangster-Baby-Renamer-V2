@@ -1,10 +1,10 @@
-Pillow
-humanize
-hachoir
+Pillow==9.4.0
+humanize==4.4.0
+hachoir==3.1.3
 pyrogram==2.0.57
-TgCrypto
+TgCrypto==1.2.4
 pymongo==4.0.2
-dnspython
+dnspython==2.3.0
 Flask==2.2.2
 gunicorn==20.1.0
 aiohttp==3.8.1
