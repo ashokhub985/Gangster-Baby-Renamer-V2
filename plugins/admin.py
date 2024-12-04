@@ -5,7 +5,7 @@ from helper.database import uploadlimit, usertype, addpre, find_one, botdata
 from helper.progress import humanbytes
 
 ADMIN = int(os.environ.get("ADMIN", 1484670284))
-LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
+LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002247619392"))
 
 @Client.on_message(filters.private & filters.user(ADMIN) & filters.command(["warn"]))
 async def warn(client, message):
