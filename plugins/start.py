@@ -27,7 +27,7 @@ LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002247619392"))
 TOKEN = os.environ.get('TOKEN', '7779296728:AAFFJu5Om-Nv7PGmwniWUTG14P4BSQS8K04')
 BOTID = TOKEN.split(':')[0]
 FLOOD = 500
-LAZY_PIC = os.environ.get("LAZY_PIC", "")
+LAZY_PIC = os.environ.get("LAZY_PIC", "https://graph.org/file/7519d226226bec1090db7.jpg")
 
 # Current Time and Greeting Logic
 current_time = datetime.datetime.now()
