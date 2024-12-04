@@ -15,8 +15,8 @@ async def start(client, message):
         total_size = data["total_size"]
         
         response_message = (
-            f"Origional BOT :- <a href='https://t.me/GangsterBaby_renamer_BOT'>Gangster Baby</a>\n"
-            f"Creater :- <a href='https://t.me/LazyDeveloper'>🦋LazyDeveloper🦋</a>\n"
+            f"Origional BOT :- <a href='http://t.me/Thumbnailforagentbot'>Gangster Baby</a>\n"
+            f"Creater :- <a href='https://t.me/Agent_ghost999'>🦋LazyDeveloper🦋</a>\n"
             f"Language :- Python3\n"
             f"Library :- Pyrogram 2.0\n"
             f"Server :- KOYEB\n"
