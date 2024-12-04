@@ -6,6 +6,48 @@ from PIL import Image
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 import ffmpeg
+import asyncio
+import logging
+import os
+import time
+from datetime import timedelta
+from pyrogram import Client, filters
+from pyrogram.types import Message
+from PIL import Image
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+from helper.ffmpeg import take_screen_shot, fix_thumb
+from helper.database import find, find_one, used_limit, dateupdate
+from helper.progress import progress_for_pyrogram, humanbytes
+from helper.set import escape_invalid_curly_brackets
+import os
+import time
+import shutil
+import ffmpeg
+import openai
+from PIL import Image, ImageDraw, ImageFont
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from pyrogram import Client, filters
+from pyrogram.types import ForceReply
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from googletrans import Translator
+import speech_recognition as sr
+import os
+import time
+import shutil
+import logging
+from PIL import Image, ImageDraw, ImageFont
+from moviepy.editor import VideoFileClip
+from pyrogram import Client, filters
+from pyrogram.types import ForceReply
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import openai
+from googletrans import Translator
+import speech_recognition as sr
+import ffmpeg
+import requests
+
+
 
 # Replace with your own details
 API_ID = os.environ.get("API_ID", "22687964")
@@ -75,22 +117,6 @@ async def process_channel_videos():
 # Start the bot
 app.run(process_channel_videos)
 
-
-
-import asyncio
-import logging
-import os
-import time
-from datetime import timedelta
-from pyrogram import Client, filters
-from pyrogram.types import Message
-from PIL import Image
-from hachoir.metadata import extractMetadata
-from hachoir.parser import createParser
-from helper.ffmpeg import take_screen_shot, fix_thumb
-from helper.database import find, find_one, used_limit, dateupdate
-from helper.progress import progress_for_pyrogram, humanbytes
-from helper.set import escape_invalid_curly_brackets
 
 # Advanced logging configuration
 logging.basicConfig(level=logging.INFO)
@@ -190,20 +216,6 @@ async def process_and_upload(bot, update):
 # Run the bot
 if __name__ == "__main__":
     app.run()
-
-
-import os
-import time
-import shutil
-import ffmpeg
-import openai
-from PIL import Image, ImageDraw, ImageFont
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from pyrogram import Client, filters
-from pyrogram.types import ForceReply
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from googletrans import Translator
-import speech_recognition as sr
 
 # Initialize OpenAI
 openai.api_key = 'YOUR_OPENAI_API_KEY'
@@ -314,21 +326,6 @@ async def update_video(bot, update):
 # Start the bot
 app.run()
 
-
-import os
-import time
-import shutil
-import logging
-from PIL import Image, ImageDraw, ImageFont
-from moviepy.editor import VideoFileClip
-from pyrogram import Client, filters
-from pyrogram.types import ForceReply
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-import openai
-from googletrans import Translator
-import speech_recognition as sr
-import ffmpeg
-import requests
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
