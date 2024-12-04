@@ -12,15 +12,27 @@ from helper.ffmpeg import take_screen_shot, fix_thumb
 from helper.database import find, find_one, used_limit, dateupdate
 from helper.progress import progress_for_pyrogram, humanbytes
 from helper.set import escape_invalid_curly_brackets
+import os
+import time
+import shutil
+import ffmpeg
+import openai
+from PIL import Image, ImageDraw, ImageFont
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from pyrogram import Client, filters
+from pyrogram.types import ForceReply
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from googletrans import Translator
+import speech_recognition as sr
 
 # Advanced logging configuration
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-API_ID = int(os.environ.get("API_ID", ""))
-API_HASH = os.environ.get("API_HASH", "")
+API_ID = int(os.environ.get("API_ID", "862729509"))
+API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
 STRING = os.environ.get("STRING", "")
-ADMIN = int(os.environ.get("ADMIN", ""))
+ADMIN = int(os.environ.get("ADMIN", "862729509"))
 LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002247619392"))
 DOWNLOAD_DIR = "downloads"
 
@@ -107,23 +119,6 @@ async def process_and_upload(bot, update):
     except Exception as e:
         logger.error(f"An error occurred during video processing: {e}")
         await update.message.edit("An unexpected error occurred.")
-
-# Run the bot
-if __name__ == "__main__":
-    app.run()
-
-import os
-import time
-import shutil
-import ffmpeg
-import openai
-from PIL import Image, ImageDraw, ImageFont
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from pyrogram import Client, filters
-from pyrogram.types import ForceReply
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from googletrans import Translator
-import speech_recognition as sr
 
 # Initialize OpenAI
 openai.api_key = 'YOUR_OPENAI_API_KEY'
