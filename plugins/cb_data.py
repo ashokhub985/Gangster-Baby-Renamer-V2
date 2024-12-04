@@ -17,7 +17,7 @@ API_ID = int(os.environ.get("API_ID", "22687964"))
 API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
 STRING = os.environ.get("STRING", "")
 ADMIN = os.environ.get("ADMIN", "862729509")
-LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "2247619392"))
+LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002247619392"))
 
 # Initialize Pyrogram Client
 app = Client("bot_session", api_id=API_ID, api_hash=API_HASH, session_string=STRING)
