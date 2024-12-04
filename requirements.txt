@@ -6,6 +6,6 @@ TgCrypto==1.2.4
 pymongo==4.0.2
 dnspython==2.3.0
 Flask==2.2.2
-Werkzeug==2.0.3  # Is line ko add karein
+Werkzeug>=2.2.2  # Is line ko update karein
 gunicorn==20.1.0
 aiohttp==3.8.1
