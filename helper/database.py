@@ -3,8 +3,8 @@ import os
 from helper.date import add_date
 
 # Load environment variables
-DB_NAME = os.environ.get("DB_NAME", "")
-DB_URL = os.environ.get("DB_URL", "")
+DB_NAME = os.environ.get("DB_NAME", "mongodb+srv://fiwalo:Vijayraj786@rename.nkh3g.mongodb.net/?retryWrites=true&w=majority&appName=Rename")
+DB_URL = os.environ.get("DB_URL", "Rename")
 
 # Initialize MongoDB Client
 mongo = pymongo.MongoClient(DB_URL)
