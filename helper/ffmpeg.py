@@ -4,6 +4,12 @@ import asyncio
 from PIL import Image
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+import time
+import os
+import asyncio
+from PIL import Image
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
 
 
 async def fix_thumb(thumb_path):
@@ -73,14 +79,6 @@ async def take_screen_shot(video_file, output_directory, timestamp):
     except Exception as e:
         print(f"Error during screenshot generation: {e}")
         return None
-
-import time
-import os
-import asyncio
-from PIL import Image
-from hachoir.metadata import extractMetadata
-from hachoir.parser import createParser
-
 
 async def fix_thumb(thumb_path):
     """
