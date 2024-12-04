@@ -3,6 +3,86 @@ import os
 import logging
 from pyrogram import Client, idle, compose
 from plugins.cb_data import app as Client2
+import os
+import sqlite3
+from PIL import Image
+from telegram import Update
+from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.http import MediaFileUpload
+
+# Database setup
+conn = sqlite3.connect('user_profiles.db')
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS profiles
+             (user_id INTEGER PRIMARY KEY, rename_pattern TEXT, custom_caption TEXT)''')
+conn.commit()
+
+# Function to create a thumbnail
+def create_thumbnail(image_path, thumbnail_path):
+    img = Image.open(image_path)
+    img.thumbnail((128, 128))
+    img.save(thumbnail_path)
+
+# Function to save user preferences
+def save_user_preferences(user_id, rename_pattern, custom_caption):
+    c.execute("INSERT OR REPLACE INTO profiles (user_id, rename_pattern, custom_caption) VALUES (?, ?, ?)",
+              (user_id, rename_pattern, custom_caption))
+    conn.commit()
+
+# Function to handle photo uploads
+def handle_photo(update: Update, context: CallbackContext) -> None:
+    photo_file = update.message.photo[-1].get_file()
+    photo_file.download('image.jpg')
+
+    # Create thumbnail
+    create_thumbnail('image.jpg', 'thumbnail.jpg')
+
+    # Send the thumbnail back to the user
+    with open('thumbnail.jpg', 'rb') as thumbnail:
+        update.message.reply_photo(photo=thumbnail, caption="Thumbnail created!")
+
+# Function to handle document uploads
+def handle_document(update: Update, context: CallbackContext) -> None:
+    document_file = update.message.document.get_file()
+    document_file.download('document.pdf')
+    # Implement renaming logic for documents here
+    update.message.reply_text("Document received and processed.")
+
+# Function to handle audio uploads
+def handle_audio(update: Update, context: CallbackContext) -> None:
+    audio_file = update.message.audio.get_file()
+    audio_file.download('audio.mp3')
+    # Implement renaming logic for audio files here
+    update.message.reply_text("Audio received and processed.")
+
+# Function to authenticate Google Drive
+def authenticate_google_drive():
+    flow = InstalledAppFlow.from_client_secrets_file('credentials.json', scopes=['https://www.googleapis.com/auth/drive.file'])
+    creds = flow.run_local_server(port=0)
+    service = build('drive', 'v3', credentials=creds)
+    return service
+
+# Function to upload a file to Google Drive
+def upload_to_drive(file_path):
+    service = authenticate_google_drive()
+    file_metadata = {'name': os.path.basename(file_path)}
+    media = MediaFileUpload(file_path, mimetype='application/pdf')
+    file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    return file.get('id')
+
+# Main function to start the bot
+def main():
+    updater = Updater("7779296728:AAFFJu5Om-Nv7PGmwniWUTG14P4BSQS8K04")
+
+    dp = updater.dispatcher
+    dp.add_handler(MessageHandler(Filters.photo, handle_photo))
+    dp.add_handler(MessageHandler(Filters.document, handle_document))
+    dp.add_handler(MessageHandler(Filters.audio, handle_audio))
+
+    updater.start_polling()
+    updater.idle()
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
