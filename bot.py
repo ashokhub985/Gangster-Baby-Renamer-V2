@@ -56,3 +56,7 @@ else:
         logger.info("Bot is running.")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    app.run()  # Example for Flask
+
