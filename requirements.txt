@@ -1,15 +1,14 @@
-Pillow==9.4.0
+Pillow==9.4.0               # Latest version
 humanize==4.4.0
 hachoir==3.1.3
 pyrogram==2.0.57
 TgCrypto==1.2.4
 pymongo==4.0.2
 dnspython==2.3.0
-Flask==2.3.3  # Update Flask to a newer version
+Flask==2.3.3                # Update Flask to a newer version
 Werkzeug>=2.2.2
 gunicorn==20.1.0
 aiohttp==3.8.1
-python-telegram-bot==20.0  # or the latest version
-Pillow==9.0.1               # or the latest version
+python-telegram-bot==20.0   # or the latest version
 google-api-python-client==2.31.0  # or the latest version
 google-auth-oauthlib==0.4.6  # or the latest version
