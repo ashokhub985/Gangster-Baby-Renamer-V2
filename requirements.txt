@@ -9,3 +9,7 @@ Flask==2.3.3  # Update Flask to a newer version
 Werkzeug>=2.2.2
 gunicorn==20.1.0
 aiohttp==3.8.1
+python-telegram-bot==20.0  # or the latest version
+Pillow==9.0.1               # or the latest version
+google-api-python-client==2.31.0  # or the latest version
+google-auth-oauthlib==0.4.6  # or the latest version
