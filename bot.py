@@ -12,6 +12,48 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.http import MediaFileUpload
 from werkzeug.utils import quote as url_quote
+import os
+import sqlite3
+from PIL import Image
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+
+# Database setup
+conn = sqlite3.connect('user_profiles.db')
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS profiles
+             (user_id INTEGER PRIMARY KEY, rename_pattern TEXT, custom_caption TEXT)''')
+conn.commit()
+
+# Function to create a thumbnail
+def create_thumbnail(video_path, thumbnail_path):
+    # Use ffmpeg or similar to create a thumbnail from the video
+    os.system(f"ffmpeg -i {video_path} -ss 00:00:01.000 -vframes 1 {thumbnail_path}")
+
+# Function to handle video uploads from the channel
+def handle_channel_video(update: Update, context: CallbackContext) -> None:
+    video_file = update.message.video.get_file()
+    video_file.download('video.mp4')
+
+    # Create thumbnail for the video
+    create_thumbnail('video.mp4', 'thumbnail.jpg')
+
+    # Send the thumbnail back to the channel (or user)
+    with open('thumbnail.jpg', 'rb') as thumbnail:
+        context.bot.send_photo(chat_id=update.message.chat_id, photo=thumbnail, caption="Thumbnail created!")
+
+    # Delete original video file after upload
+    os.remove('video.mp4')
+
+# Main function to start the bot
+def main():
+    updater = Updater("7779296728:AAFFJu5Om-Nv7PGmwniWUTG14P4BSQS8K04")
+
+    dp = updater.dispatcher
+    dp.add_handler(MessageHandler(Filters.video, handle_channel_video))
+
+    updater.start_polling()
+    updater.idle()
 
 # Database setup
 conn = sqlite3.connect('user_profiles.db')
