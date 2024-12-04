@@ -5,7 +5,7 @@ from helper.database import botdata, find_one, total_user, getid
 from helper.progress import humanbytes
 
 # Initialize Bot ID and Admin ID
-token = os.getenv("TOKEN", "")
+token = os.getenv("TOKEN", "bdce6f5214b673c8e8295403e250e383")
 botid = token.split(":")[0]
 ADMIN = int(os.getenv("ADMIN", "0"))
 
