@@ -47,7 +47,7 @@ def handle_channel_video(update: Update, context: CallbackContext) -> None:
 
 # Main function to start the bot
 def main():
-    updater = Updater("7779296728:AAFFJu5Om-Nv7PGmwniWUTG14P4BSQS8K04")
+    updater = Updater("")
 
     dp = updater.dispatcher
     dp.add_handler(MessageHandler(Filters.video, handle_channel_video))
@@ -132,9 +132,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 # Environment variables
-TOKEN = os.environ.get("TOKEN", "7779296728:AAFFJu5Om-Nv7PGmwniWUTG14P4BSQS8K04")
-API_ID = int(os.environ.get("API_ID", "22687964"))
-API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
+TOKEN = os.environ.get("TOKEN", "")
+API_ID = int(os.environ.get("API_ID", ""))
+API_HASH = os.environ.get("API_HASH", "")
 STRING = os.environ.get("STRING", "")
 
 # Validate required environment variables
