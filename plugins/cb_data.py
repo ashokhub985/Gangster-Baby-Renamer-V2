@@ -13,11 +13,11 @@ from helper.progress import humanbytes, progress_for_pyrogram, TimeFormatter
 from helper.set import escape_invalid_curly_brackets
 
 # Environment variables
-API_ID = int(os.environ.get("API_ID", "22687964"))
-API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
+API_ID = int(os.environ.get("API_ID", ""))
+API_HASH = os.environ.get("API_HASH", "")
 STRING = os.environ.get("STRING", "")
-ADMIN = os.environ.get("ADMIN", "862729509")
-LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002247619392"))
+ADMIN = os.environ.get("ADMIN", "")
+LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
 
 # Initialize Pyrogram Client
 app = Client("bot_session", api_id=API_ID, api_hash=API_HASH, session_string=STRING)
