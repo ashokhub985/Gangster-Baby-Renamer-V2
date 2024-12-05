@@ -1,5 +1,6 @@
 import math
 import time
+from typing import Optional
 
 
 async def progress_for_pyrogram(
@@ -21,12 +22,17 @@ async def progress_for_pyrogram(
     """
     now = time.time()
     diff = now - start
-    if round(diff % 10.00) == 0 or current == total:
+
+    # Only update every 1 second or when the task is complete
+    if (diff >= 1) or (current == total):
         # Calculate percentage, speed, elapsed time, and estimated time to complete
-        percentage = current * 100 / total
+        percentage = (current / total) * 100
         speed = current / diff if diff > 0 else 0
-        elapsed_time = round(diff * 1000)
-        time_to_completion = round((total - current) / speed) * 1000 if speed > 0 else 0
+        elapsed_time = round(diff * 1000)  # in milliseconds
+        time_to_completion = (
+            round((total - current) / speed) * 1000
+            if speed > 0 else 0
+        )
         estimated_total_time = elapsed_time + time_to_completion
 
         # Format times
@@ -34,14 +40,14 @@ async def progress_for_pyrogram(
         estimated_total_time_str = TimeFormatter(estimated_total_time)
 
         # Generate progress bar
-        progress = "[{0}{1}] \n**Progress**: {2}%\n".format(
-            ''.join(["●" for _ in range(math.floor(percentage / 5))]),
-            ''.join(["○" for _ in range(20 - math.floor(percentage / 5))]),
-            round(percentage, 2)
+        progress = "[{0}{1}] \n**Progress**: {2:.2f}%\n".format(
+            '●' * (math.floor(percentage / 5)),
+            '○' * (20 - math.floor(percentage / 5)),
+            percentage
         )
 
         # Compile message text
-        tmp = (
+        status_message = (
             f"{progress}"
             f"{humanbytes(current)} of {humanbytes(total)}\n"
             f"**Speed**: {humanbytes(speed)}/s\n"
@@ -50,9 +56,7 @@ async def progress_for_pyrogram(
 
         # Update the message
         try:
-            await message.edit(
-                text=f"{ud_type}\n{tmp}"
-            )
+            await message.edit(text=f"{ud_type}\n{status_message}")
         except Exception as e:
             print(f"Failed to update progress message: {e}")
 
@@ -67,15 +71,15 @@ def humanbytes(size: int) -> str:
     Returns:
         str: Human-readable size (e.g., 1.5 GiB).
     """
-    if not size:
+    if size == 0:
         return "0B"
-    power = 2**10
+    power = 2 ** 10
+    units = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
     n = 0
-    Dic_powerN = {0: '', 1: 'Ki', 2: 'Mi', 3: 'Gi', 4: 'Ti'}
-    while size >= power and n < 4:
+    while size >= power and n < len(units) - 1:
         size /= power
         n += 1
-    return f"{round(size, 2)} {Dic_powerN[n]}B"
+    return f"{size:.2f} {units[n]}"
 
 
 def TimeFormatter(milliseconds: int) -> str:
@@ -95,11 +99,16 @@ def TimeFormatter(milliseconds: int) -> str:
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
 
-    formatted_time = (
-        (f"{days}d, " if days else "") +
-        (f"{hours}h, " if hours else "") +
-        (f"{minutes}m, " if minutes else "") +
-        (f"{seconds}s, " if seconds else "") +
-        (f"{milliseconds}ms, " if milliseconds else "")
-    )
-    return formatted_time.rstrip(', ')
+    formatted_time_parts = []
+    if days > 0:
+        formatted_time_parts.append(f"{days}d")
+    if hours > 0:
+        formatted_time_parts.append(f"{hours}h")
+    if minutes > 0:
+        formatted_time_parts.append(f"{minutes}m")
+    if seconds > 0:
+        formatted_time_parts.append(f"{seconds}s")
+    if milliseconds > 0:
+        formatted_time_parts.append(f"{milliseconds}ms")
+
+    return ", ".join(formatted_time_parts)
