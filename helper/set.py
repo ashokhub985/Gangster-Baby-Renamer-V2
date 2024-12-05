@@ -19,7 +19,7 @@ def escape_invalid_curly_brackets(text: str, valids: List[str]) -> str:
         if text[idx] == "{":
             # Handle double curly brackets "{{"
             if idx + 1 < len(text) and text[idx + 1] == "{":
-                new_text.append("{{{{")
+                new_text.append("{{")
                 idx += 2
                 continue
             
@@ -41,7 +41,7 @@ def escape_invalid_curly_brackets(text: str, valids: List[str]) -> str:
         elif text[idx] == "}":
             # Handle double curly brackets "}}"
             if idx + 1 < len(text) and text[idx + 1] == "}":
-                new_text.append("}}}}")
+                new_text.append("}}")
                 idx += 2
                 continue
             
@@ -56,8 +56,9 @@ def escape_invalid_curly_brackets(text: str, valids: List[str]) -> str:
 
     return ''.join(new_text)
 
+# Example usage
 text = "Hello {user}, your balance is {{balance}}."
 valids = ["user", "balance"]
 
 result = escape_invalid_curly_brackets(text, valids)
-print(result)  # Output: "Hello {user}, your balance is {{{{balance}}}}."
+print(result)  # Output: "Hello {user}, your balance is {{balance}}."
