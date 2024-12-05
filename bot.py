@@ -117,7 +117,7 @@ def upload_to_drive(file_path):
 
 # Main function to start the bot
 def main():
-    updater = Updater("7779296728:AAFFJu5Om-Nv7PGmwniWUTG14P4BSQS8K04")
+    updater = Updater("")
 
     dp = updater.dispatcher
     dp.add_handler(MessageHandler(Filters.photo, handle_photo))
