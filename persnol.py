@@ -50,10 +50,10 @@ import requests
 
 
 # Replace with your own details
-API_ID = os.environ.get("API_ID", "22687964")
-API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
+API_ID = os.environ.get("API_ID", "")
+API_HASH = os.environ.get("API_HASH", "")
 STRING = os.environ.get("STRING", "")
-CHANNEL_ID = os.environ.get("CHANNEL_ID", "-1002474537025")  # The channel to process
+CHANNEL_ID = os.environ.get("CHANNEL_ID", "")  # The channel to process
 
 app = Client("video_processor", api_id=API_ID, api_hash=API_HASH, session_string=STRING)
 
@@ -122,11 +122,11 @@ app.run(process_channel_videos)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-API_ID = int(os.environ.get("API_ID", "22687964"))
-API_HASH = os.environ.get("API_HASH", "bdce6f5214b673c8e8295403e250e383")
+API_ID = int(os.environ.get("API_ID", ""))
+API_HASH = os.environ.get("API_HASH", "")
 STRING = os.environ.get("STRING", "")
-ADMIN = int(os.environ.get("ADMIN", "862729509"))
-LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002247619392"))
+ADMIN = int(os.environ.get("ADMIN", ""))
+LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
 DOWNLOAD_DIR = "downloads"
 
 app = Client("advanced_bot", api_id=API_ID, api_hash=API_HASH, session_string=STRING)
