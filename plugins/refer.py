@@ -6,8 +6,8 @@ async def refer(client, message):
     try:
         # Generate a shareable referral link for the user
         user_id = message.from_user.id
-        share_link = f"https://t.me/share/url?url=http://t.me/Thumbnailforagentbot?start={user_id}"
-        referral_link = f"http://t.me/Thumbnailforagentbot?start={user_id}"
+        share_link = f"https://t.me/share/url?url=http://t.me/Thumbnail999bot?start={user_id}"
+        referral_link = f"http://t.me/Thumbnail999bot?start={user_id}"
 
         # Create an inline keyboard with a button for sharing the link
         reply_markup = InlineKeyboardMarkup(
