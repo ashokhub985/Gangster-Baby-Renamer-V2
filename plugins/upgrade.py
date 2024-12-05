@@ -4,6 +4,12 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 # Function to generate the upgrade message and keyboard
 def get_upgrade_text_and_keyboard():
+    """
+    Generates the upgrade message and keyboard for the user.
+    
+    Returns:
+        tuple: The formatted message text and the keyboard markup.
+    """
     text = """**Free Plan User**
     Daily Upload limit 1.2GB
     Price 0
@@ -35,11 +41,33 @@ def get_upgrade_text_and_keyboard():
 # Callback query handler for "upgrade"
 @Client.on_callback_query(filters.regex('upgrade'))
 async def upgrade_callback(bot, update):
-    text, keyboard = get_upgrade_text_and_keyboard()
-    await update.message.edit(text=text, reply_markup=keyboard)
+    """
+    Handles the callback query for the "upgrade" button.
+    
+    Args:
+        bot (Client): The Pyrogram client instance.
+        update (CallbackQuery): The callback query object.
+    """
+    try:
+        text, keyboard = get_upgrade_text_and_keyboard()
+        await update.message.edit(text=text, reply_markup=keyboard)
+    except Exception as e:
+        print(f"Error handling upgrade callback: {e}")
+        await update.message.reply_text("An error occurred while processing your request. Please try again later.")
 
 # Command handler for "/upgrade"
 @Client.on_message(filters.private & filters.command(["upgrade"]))
 async def upgrade_command(bot, message):
-    text, keyboard = get_upgrade_text_and_keyboard()
-    await message.reply_text(text=text, reply_markup=keyboard)
+    """
+    Handles the "/upgrade" command from users.
+    
+    Args:
+        bot (Client): The Pyrogram client instance.
+        message (Message): The message object.
+    """
+    try:
+        text, keyboard = get_upgrade_text_and_keyboard()
+        await message.reply_text(text=text, reply_markup=keyboard)
+    except Exception as e:
+        print(f"Error handling upgrade command: {e}")
+        await message.reply_text("An error occurred while processing your request. Please try again later.")
