@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   workerdisk:
     build: .
@@ -19,11 +18,11 @@ services:
     volumes:
       - workerdisk_data:/data
     ports:
-      - "5000:5000"
+      - "8080:5000"  # Change 5000 to 8080 if you need to expose that port
     depends_on:
       - db
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
       retries: 3
       start_period: 5s
@@ -42,40 +41,3 @@ services:
           cpus: "0.25"
           memory: "256M"
     read_only: true
-
-  db:
-    image: mongo:latest
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
-    env_file:
-      - ./secrets/db.env
-    volumes:
-      - db_data:/data/db
-    ports:
-      - "27017:27017"
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.stats()"]
-      interval: 30s
-      retries: 3
-      start_period: 5s
-      timeout: 10s
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: "1G"
-        reservations:
-          cpus: "0.5"
-          memory: "512M"
-    read_only: true
-
-volumes:
-  workerdisk_data:
-  db_data:
-
-secrets:
-  api_credentials:
-    file: ./secrets/api_credentials.env
-  db_credentials:
-    file: ./secrets/db_credentials.env
