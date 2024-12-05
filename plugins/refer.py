@@ -4,8 +4,9 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 @Client.on_message(filters.private & filters.command(["refer"]))
 async def refer(client, message):
     # Generate a shareable link for the user
-    share_link = f"https://t.me/share/url?url=http://t.me/Thumbnailforagentbot?start={message.from_user.id}"
-    referral_link = f"http://t.me/Thumbnailforagentbot?start={message.from_user.id}"
+    user_id = message.from_user.id
+    share_link = f"https://t.me/share/url?url=http://t.me/Thumbnailforagentbot?start={user_id}"
+    referral_link = f"http://t.me/Thumbnailforagentbot?start={user_id}"
 
     # Create the inline keyboard with a button to share the link
     reply_markup = InlineKeyboardMarkup(
