@@ -19,12 +19,12 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 # Environment Variables
-CHANNEL = os.environ.get('CHANNEL', "-1002460917426")
+CHANNEL = os.environ.get('CHANNEL', "")
 STRING = os.environ.get("STRING", "")
-ADMIN = int(os.environ.get("ADMIN", 862729509))
-BOT_USERNAME = os.environ.get("BOT_USERNAME", "ThumbnailforagentBOT")
-LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002247619392"))
-TOKEN = os.environ.get('TOKEN', '7779296728:AAFFJu5Om-Nv7PGmwniWUTG14P4BSQS8K04')
+ADMIN = int(os.environ.get("ADMIN", ))
+BOT_USERNAME = os.environ.get("BOT_USERNAME", ")
+LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
+TOKEN = os.environ.get('TOKEN', '')
 BOTID = TOKEN.split(':')[0]
 FLOOD = 500
 LAZY_PIC = os.environ.get("LAZY_PIC", "https://graph.org/file/7519d226226bec1090db7.jpg")
