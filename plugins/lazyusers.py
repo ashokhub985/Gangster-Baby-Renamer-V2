@@ -1,8 +1,12 @@
 import os
+import logging
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from helper.database import botdata, find_one, total_user, getid
 from helper.progress import humanbytes
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Initialize Bot ID and Admin ID
 token = os.getenv("TOKEN", "")
@@ -47,6 +51,7 @@ async def lazy_users(client, message):
             )
         )
 
+        logging.info("Lazy users information sent successfully to admin.")
     except Exception as e:
-        # Log error and notify admin
+        logging.error(f"Error occurred while fetching lazy users information: {e}")
         await message.reply_text(f"**Error**: {str(e)}", quote=True)
