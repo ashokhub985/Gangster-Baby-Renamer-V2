@@ -9,7 +9,18 @@ from telegram.ext import Updater, MessageHandler, Filters, CallbackContext, Comm
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.http import MediaFileUpload
+from pyrogram import Client
 
+# Aapki API credentials
+API_ID = 22687964
+API_HASH = "bdce6f5214b673c8e8295403e250e383"
+
+# Create Client instance
+with Client("my_account", api_id=API_ID, api_hash=API_HASH) as app:
+    session_string = app.export_session_string()
+    print("\nYour Session String:")
+    print(session_string)
+  
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
