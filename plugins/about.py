@@ -32,7 +32,7 @@ async def start(client, message):
         
         # Format the response message
         response_message = (
-            f"Original BOT: <a href='http://t.me/Thumbnailforagentbot'>Gangster Baby</a>\n"
+            f"Original BOT: <a href='http://t.me/Thumbnail999bot'>Gangster Baby</a>\n"
             f"Creator: <a href='https://t.me/Agent_ghost999'>🦋LazyDeveloper🦋</a>\n"
             f"Language: Python 3\n"
             f"Library: Pyrogram 2.0\n"
