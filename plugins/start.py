@@ -21,13 +21,23 @@ logging.basicConfig(level=logging.INFO)
 # Environment Variables
 CHANNEL = os.environ.get('CHANNEL', "")
 STRING = os.environ.get("STRING", "")
-ADMIN = int(os.environ.get("ADMIN", ))
+ADMIN = int(os.environ.get("ADMIN", 0))
 BOT_USERNAME = os.environ.get("BOT_USERNAME", "")
-LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
+LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", 0))
 TOKEN = os.environ.get('TOKEN', '')
 BOTID = TOKEN.split(':')[0]
 FLOOD = 500
 LAZY_PIC = os.environ.get("LAZY_PIC", "https://graph.org/file/7519d226226bec1090db7.jpg")
+
+# Helper function to create consistent InlineKeyboardMarkup
+def create_inline_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/updateeeeeeee")],
+        [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
+        [InlineKeyboardButton("Support Group", url='https://t.me/AgentCommunity999'),
+         InlineKeyboardButton("Movie Channel", url='https://t.me/movieeeeeeeeeeeeew')],
+        [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
+    ])
 
 # Current Time and Greeting Logic
 current_time = datetime.datetime.now()
@@ -50,13 +60,7 @@ async def start(client, message):
         await message.reply_photo(
             photo=LAZY_PIC,
             caption=txt,
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/updateeeeeeee")],
-                [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                [InlineKeyboardButton("Support Group", url='https://t.me/AgentCommunity999'),
-                 InlineKeyboardButton("Movie Channel", url='https://t.me/movieeeeeeeeeeeeew')],
-                [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
-            ])
+            reply_markup=create_inline_keyboard()
         )
         return
 
@@ -67,13 +71,7 @@ async def start(client, message):
             await message.reply_photo(
                 photo=LAZY_PIC,
                 caption=txt,
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/updateeeeeeee")],
-                    [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                    [InlineKeyboardButton("Support Group", url='https://t.me/AgentCommunity999'),
-                     InlineKeyboardButton("Movie Channel", url='https://t.me/movieeeeeeeeeeeeew')],
-                    [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
-                ])
+                reply_markup=create_inline_keyboard()
             )
         except Exception as e:
             logging.error(f"Failed to send message to user {user_id}: {e}")
@@ -89,13 +87,7 @@ async def start(client, message):
             __I am a file renamer bot. Please send any Telegram **Document or Video** and enter a new filename to rename it.__
             """,
             reply_to_message_id=message.id,
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔺 Update Channel 🔺", url="https://t.me/updateeeeeeee")],
-                [InlineKeyboardButton("🦋 Subscribe us 🦋", url="https://youtube.com/@LazyDeveloperr")],
-                [InlineKeyboardButton("Support Group", url='https://t.me/AgentCommunity999'),
-                 InlineKeyboardButton("Movie Channel", url='https://t.me/movieeeeeeeeeeeeew')],
-                [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
-            ])
+            reply_markup=create_inline_keyboard()
         )
 
 # Function to handle file messages
@@ -110,7 +102,7 @@ async def send_doc(client, message):
             await client.get_chat_member(update_channel, user_id)
         except UserNotParticipant:
             _newus = find_one(user_id)
-            user_plan = _newus["usertype"]
+            user_plan = _newus.get("usertype", "Unknown")
             await message.reply_text(
                 "**__You are not subscribed to my channel__**",
                 reply_to_message_id=message.id,
@@ -138,13 +130,7 @@ async def send_doc(client, message):
     except KeyError:
         await message.reply_text(
             text=f"Hello {message.from_user.first_name}, we are currently working on this issue. Please try renaming files from another account.",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🦋 Contact LazyDeveloper 🦋", url='https://t.me/updateeeeeeee')],
-                [InlineKeyboardButton("🔺 Watch Tutorial 🔺", url='https://youtube.com/@LazyDeveloperr')],
-                [InlineKeyboardButton("🦋 Visit Channel", url='https://t.me/AgentCommunity999'),
-                 InlineKeyboardButton("Support Group 🦋", url='https://t.me/movieeeeeeeeeeeeew')],
-                [InlineKeyboardButton("☕ Buy Me A Coffee ☕", url='https://p.paytm.me/xCTH/vo37hii9')]
-            ])
+            reply_markup=create_inline_keyboard()
         )
         return
 
@@ -180,7 +166,37 @@ async def send_doc(client, message):
                 reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("☕ Upgrade Plan ☕", url='https://t.me/updateeeeeeee')]])
             )
             return
-        # Proceed with renaming and updating user data here as needed
+
+        # Flood control for the user
+        c_time = time.time()
+        then = used_date + LIMIT
+        left = round(then - c_time)
+        conversion = datetime.timedelta(seconds=left)
+        ltime = str(conversion)
+        if left > 0:
+            await message.reply_text(f"```Sorry Dude I am not only for YOU \n Flood control is active so please wait for {ltime}```", reply_to_message_id=message.id)
+        else:
+            # Forward a single message
+            media = await client.get_messages(message.chat.id, message.id)
+            file = media.document or media.video or media.audio
+            dcid = FileId.decode(file.file_id).dc_id
+            filename = file.file_name
+            value = 2147483648  # 2GB
+            used_ = find_one(message.from_user.id)
+            used = used_["used_limit"]
+            limit = used_["uploadlimit"]
+            expi = daily - int(time.mktime(time.strptime(str(date_.today()), '%Y-%m-%d')))
+            if expi != 0:
+                today = date_.today()
+                pattern = '%Y-%m-%d'
+                epcho = int(time.mktime(time.strptime(str(today), pattern)))
+                daily_(message.from_user.id, epcho)
+                used_limit(message.from_user.id, 0)
+            remain = limit - used
+            if remain < int(file.file_size):
+                await message.reply_text(f"100% of daily {humanbytes(limit)} data quota exhausted.\n\n  File size detected {humanbytes(file.file_size)}\n  Used Daily Limit {humanbytes(used)}\n\nYou have only **{humanbytes(remain)}** left on your Account.\nIf U Want to Rename Large File Upgrade Your Plan ", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("☕Upgrade Plan", url="https://t.me/updateeeeeeee")]])
+            else:
+                await message.reply_text("🦋 File Renaming Now 🦋", reply_markup=InlineKeyboardMarkup([ [InlineKeyboardButton("Start File Renaming", callback_data="rename_rename")]]))
 
     c_time = time.time()
 
